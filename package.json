@@ -1,0 +1,26 @@
+{
+  "name": "citmern2405_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alammuntasir/citmern2405_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alammuntasir/citmern2405_backend/issues"
+  },
+  "homepage": "https://github.com/alammuntasir/citmern2405_backend#readme",
+  "dependencies": {
+    "dotenv": "^13.0.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.2",
+    "nodemon": "^3.1.10"
+  }
+}
