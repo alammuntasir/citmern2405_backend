@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 const dbconnection = require("./src/config/dbconfig");
 const router = require("./src/config/route");
+const errorhandlingMiddelware = require("./src/config/utils/errorhandling");
+const pathNotFound = require("./src/config/utils/pathnotfound");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -16,9 +18,9 @@ app.use(router);
 
 // page not found middelware
 
-app.use(( req, res) => {
-  return res.status(404).json({message : "route not found"});
-});
+app.use(pathNotFound);
+
+app.use(errorhandlingMiddelware);
 
 app.listen(port, () => { 
   console.log(`server is running port number ${port}`);
