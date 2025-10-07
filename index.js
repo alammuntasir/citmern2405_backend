@@ -2,9 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const dbconnection = require("./src/config/dbconfig");
-const router = require("./src/config/route");
-const errorhandlingMiddelware = require("./src/config/utils/errorhandling");
-const pathNotFound = require("./src/config/utils/pathnotfound");
+const errorhandlingMiddelware = require("./src/utils/errorhandling");
+const pathNotFound = require("./src/utils/pathnotfound");
+const router = require("./src/route");
 
 const app = express();
 const port = process.env.PORT || 4000;
