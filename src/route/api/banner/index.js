@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
-    console.log(file);
+  
     const randomtext = Date.now() + "-" + Math.round(Math.random() * 1e9);
     let fileextantion = file.originalname.split(".");
     let extansionn = fileextantion[fileextantion.length - 1];
@@ -38,18 +38,20 @@ const upload = multer({
     checkFileType(file, cb);
   },
 });
-// http://localhost:3000/api/v1/auth/signup
+// http://localhost:3000/api/v1/banner/addbanner
 router.post(
   "/addbanner",
-  TokenCheckMiddelware,
-  adminCheck,
   upload.single("banner"),
   addBannerController
 );
 router.delete(
   "/deletebanner/:id",
-  TokenCheckMiddelware,
-  adminCheck,
   deleteBannnerController
 );
+// router.delete(
+//   "/deletebanner/:id",
+//   TokenCheckMiddelware,
+//   adminCheck,
+//   deleteBannnerController
+// );
 module.exports = router;
