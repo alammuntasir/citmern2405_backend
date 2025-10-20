@@ -2,56 +2,34 @@ const express = require("express");
 const {
   addBannerController,
   deleteBannnerController,
+  updateBannerController,
+  allBannersController,
 } = require("../../../controller/bannerController");
-const multer = require("multer");
+
 const router = express.Router();
 const path = require("path");
-const { TokenCheckMiddelware, adminCheck } = require("../../../utils/authMiddelware");
+const {
+  TokenCheckMiddelware,
+  adminCheck,
+} = require("../../../utils/authMiddelware");
+const upload = require("../../../utils/upload");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-  filename: function (req, file, cb) {
-  
-    const randomtext = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    let fileextantion = file.originalname.split(".");
-    let extansionn = fileextantion[fileextantion.length - 1];
-    cb(null, file.fieldname + "-" + randomtext + "." + extansionn);
-  },
-});
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb("Error: Images only! (jpeg, jpg, png, gif)");
-  }
-}
-
-const upload = multer({
-  storage: storage, 
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-});
 // http://localhost:3000/api/v1/banner/addbanner
-router.post(
-  "/addbanner",
-  upload.single("banner"),
-  addBannerController
-);
-router.delete(
-  "/deletebanner/:id",
-  deleteBannnerController
-);
+router.post("/addbanner", upload.single("banner"), addBannerController);
+router.delete("/deletebanner/:id", deleteBannnerController);
 // router.delete(
 //   "/deletebanner/:id",
 //   TokenCheckMiddelware,
 //   adminCheck,
 //   deleteBannnerController
 // );
+
+router.patch(
+  "/updatebanner/:id",
+  upload.single("banner"),
+  updateBannerController
+);
+
+router.get("/allbanners",allBannersController )
+
 module.exports = router;
