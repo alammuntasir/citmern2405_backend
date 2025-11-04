@@ -120,7 +120,11 @@ const alluserController = async (req, res, next) => {
         message: "all users fetch successfully",
         data: allusers,
       });
-  } catch (error) {}
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
 };
 module.exports = {
   signupController,
