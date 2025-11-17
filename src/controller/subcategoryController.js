@@ -1,8 +1,9 @@
 let slugify = require("slugify");
 const subcategoryModel = require("../model/subcategory.model");
-let addsubcategoryController = async(req,res)=>{
-try {
-   let {name}= req.body;
+const categoryModel = require("../model/category.model");
+let addsubcategoryController = async (req, res) => {
+  try {
+    let { name, category } = req.body;
     let slug = slugify(name, {
       replacement: "-",
       remove: undefined,
@@ -11,14 +12,77 @@ try {
     });
 
     let addsubcategory = new subcategoryModel({
-        
+      name,
+      slug,
+      category,
+    });
 
-    })
-} catch (error) {
+    // update category
+
+    let updateCategory = await categoryModel.findOneAndUpdate(
+      { _id: category },
+      { $push: { subcategory: addsubcategory._id } }
+    );
+    await updateCategory.save();
+    await addsubcategory.save();
+    return res.status(201).json({
+      success: true,
+      message: "subcategory created successfull",
+      data: addsubcategory,
+    });
+  } catch (error) {
     return res
       .status(500)
       .json({ success: false, message: error.message || error });
-}
-}
+  }
+};
 
-module.exports={addsubcategoryController}
+let deleteSubCategoryController = async (req, res) => {
+  try {
+    let { id } = req.params;
+    await subcategoryModel.findByIdAndDelete(id);
+
+    await categoryModel.findOneAndUpdate(
+      { subcategory: id },
+      { $pull: { subcategory: id } }
+    );
+
+    return res
+      .status(200)
+      .json({ success: true, message: "sub category deleted successfull" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
+};
+
+let updateSubcategoryController = async (req, res) => {
+  try {
+    let { id } = req.params;
+    let {name}= req.body;
+    let slug = slugify(name, {
+      replacement: "-",
+      remove: undefined,
+      lower: true,
+      trim: true,
+    });
+
+    await subcategoryModel.findByIdAndUpdate(id, {name, slug})
+
+    return res.status(200).json({success:"true", message:"subcategory updated successfull"})
+   
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || error });
+  }
+};
+
+
+
+module.exports = {
+  addsubcategoryController,
+  deleteSubCategoryController,
+  updateSubcategoryController
+};
