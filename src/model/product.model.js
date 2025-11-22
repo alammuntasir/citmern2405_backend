@@ -6,6 +6,10 @@ const productSchema = new mongoose.Schema(
       required: [true, "name is required"],
       unique: true,
     },
+    image: {
+      type: Array,
+      require: [true, "image is required"],
+    },
 
     description: {
       type: String,
@@ -31,7 +35,7 @@ const productSchema = new mongoose.Schema(
     },
     reviews: [
       {
-        type: string,
+        type: String,
       },
     ],
     variantType: {
@@ -41,11 +45,11 @@ const productSchema = new mongoose.Schema(
     variants: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "variant",
+        ref: "Variant",
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true } 
 );
 
 module.exports = mongoose.model("Product", productSchema);
