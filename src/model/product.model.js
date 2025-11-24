@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const productSchema = new mongoose.Schema(
   {
+   
     title: {
       type: String,
       required: [true, "name is required"],
@@ -45,11 +46,11 @@ const productSchema = new mongoose.Schema(
     variants: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "Variant",
+        ref: "variant",
       },
     ],
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Product", productSchema);

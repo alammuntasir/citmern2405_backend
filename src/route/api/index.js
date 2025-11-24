@@ -6,6 +6,7 @@ const banner = require('./banner')
 const category = require("./category")
 const subCategory = require('./subcategory')
 const product = require("./product")
+const coupon = require("./coupon")
 // http://localhost:3000/api/v1/auth
 
 router.use('/auth', auth)
@@ -16,6 +17,7 @@ router.use("/category",category)
 router.use("/subcategory",subCategory)
 
 router.use("/product",product)
+router.use("/coupon",coupon)
 
 
 module.exports = router;
