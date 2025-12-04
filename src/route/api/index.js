@@ -1,23 +1,27 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const auth= require('./auth')
-const banner = require('./banner')
-const category = require("./category")
-const subCategory = require('./subcategory')
-const product = require("./product")
-const coupon = require("./coupon")
+const auth = require("./auth");
+const banner = require("./banner");
+const category = require("./category");
+const subCategory = require("./subcategory");
+const product = require("./product");
+const coupon = require("./coupon");
+const cart = require("./cart");
+const order = require("./order");
 // http://localhost:3000/api/v1/auth
 
-router.use('/auth', auth)
-router.use('/banner', banner)
+router.use("/auth", auth);
+router.use("/banner", banner);
 
-router.use("/category",category)
+router.use("/category", category);
 
-router.use("/subcategory",subCategory)
+router.use("/subcategory", subCategory);
 
-router.use("/product",product)
-router.use("/coupon",coupon)
+router.use("/product", product);
+router.use("/coupon", coupon);
+router.use("/cart", cart);
 
+router.use("/order", order);
 
 module.exports = router;
