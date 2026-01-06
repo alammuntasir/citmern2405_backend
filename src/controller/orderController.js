@@ -46,12 +46,28 @@ const createOrderController = async (req, res) => {
         let totalprice = cartlist.reduce((prev, cur) => {
           return prev + cur.totalprice;
         }, 0);
+        let tran_id = `TRNX${Date.now()}`;
+        let order = new orderModel({
+          user,
+          orderstatus,
+          discount,
+          paymentmethod,
+          city,
+          address,
+          phone,
+          items: cartlist,
+          totalprice,
+          trnd_id: tran_id,
+        });
+        await order.save();
+
+        let deletecart = await cartModel.deleteMany({ user });
 
         const data = {
           total_amount: totalprice,
           currency: "BDT",
-          tran_id: `TRNX${Date.now()}`, // use unique tran_id for each api call
-          success_url: "http://localhost:3030/success",
+          tran_id: tran_id, // use unique tran_id for each api call
+          success_url: `http://localhost:3000/api/v1/order/success/${tran_id}`,
           fail_url: "http://localhost:3030/fail",
           cancel_url: "http://localhost:3030/cancel",
           ipn_url: "http://localhost:3030/ipn",
@@ -78,13 +94,11 @@ const createOrderController = async (req, res) => {
           ship_country: "Bangladesh",
         };
 
-        
-
         const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
         sslcz.init(data).then((apiResponse) => {
           // Redirect the user to payment gateway
           let GatewayPageURL = apiResponse.GatewayPageURL;
-          console.log(apiResponse)
+          console.log(apiResponse);
           // res.redirect(GatewayPageURL);
           console.log("Redirecting to: ", GatewayPageURL);
         });
@@ -126,4 +140,23 @@ const allorderListController = async (req, res) => {
   }
 };
 
-module.exports = { createOrderController, allorderListController };
+const successOrderController = async (req, res) => {
+  let { id } = req.params;
+
+  let order = await orderModel.findOneAndUpdate(
+    { trnd_id: id },
+    { paid: "paid" },
+    { new: true }
+  );
+
+  res
+    .status(200)
+    .json({ success: true, message: "payment success", data: order });
+
+  console.log(id);
+};
+module.exports = {
+  createOrderController,
+  allorderListController,
+  successOrderController,
+};

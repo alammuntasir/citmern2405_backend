@@ -126,11 +126,18 @@ const alluserController = async (req, res, next) => {
       .json({ success: false, message: error.message || error });
   }
 };
+
+const verifyUserController = async(req,res)=>{
+
+  res.send("varified done")
+
+}
 module.exports = {
   signupController,
   verifyOtpController,
   loginController,
   alluserController,
+  verifyUserController
 };
 
 // setTimeout(async () => {

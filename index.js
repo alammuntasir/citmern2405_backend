@@ -5,9 +5,11 @@ const dbconnection = require("./src/config/dbconfig");
 const errorhandlingMiddelware = require("./src/utils/errorhandling");
 const pathNotFound = require("./src/utils/pathnotfound");
 const router = require("./src/route");
+const cors = require('cors')
 
 const app = express();
 const port = process.env.PORT || 4000;
+app.use(cors())
 
 app.use(express.json());
 app.use(express.static("uploads"))

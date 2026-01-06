@@ -61,6 +61,11 @@ const orderSchema = new mongoose.Schema(
     },
     trnd_id:{
         type: String,
+    },
+    paid:{
+      type: String,
+      enum: ["paid", "unpaid"],
+      default:"unpaid"
     }
   },
 
